@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run build",
-    "build": "webpack -d && xcopy \"src/index.html\" \"dist/\" /F /Y && webpack-dev-server --content-base src/ --watch",
+    "build": "webpack -d --display-error-details && xcopy \"src/index.html\" \"dist/\" /F /Y && webpack-dev-server --content-base src/ --watch",
     "build:prod": "webpack -p && xcopy \"src/index.html\" \"dist/\" /F /Y"
   },
   "author": "axZerk",

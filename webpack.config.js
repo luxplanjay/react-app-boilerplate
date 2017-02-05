@@ -20,7 +20,7 @@ const config = {
     module: {
         loaders: [
             {
-                test: /\.js$/,
+                test: /\.(js|jsx)$/,
                 include: SRC_DIR,
                 loader: 'babel-loader',
                 query: {
@@ -34,6 +34,14 @@ const config = {
                     fallback: 'style-loader',
                     use: 'css-loader?sourceMap!sass-loader?sourceMap'
                 })
+            },
+            {
+                test: /\.json$/,
+                loader: "json-loader"
+            },
+            {
+                test: /\.(png|gif|jpg|jpeg|svg|otf|ttf|eot|woff)$/,
+                loader: 'file-loader'
             }
         ]
     },
