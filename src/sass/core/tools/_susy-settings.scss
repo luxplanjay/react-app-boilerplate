@@ -1,0 +1,45 @@
+$susy: (
+        flow: ltr, // сменить дефолтное навправление колонок, можно задавать переменной и менять для арабских сайтов
+        math: fluid, // можно использовать static для неадаптивных сайтов
+        output: float, // использовать outside для исправлениях некоторых багов
+        gutter-position: inside, // возможны разные варианты, например, before и inside
+        container: 1280px, // максимальная ширину в любых единицах, например 960px
+        container-position: center, // если хотим сделать не по центру, то можно использовать left и right
+        columns: 12, // количество колонок
+        gutters: 1/4, // ширина пробельчика для каждой колонки
+        column-width: false, // ширина колонки задается только при math: static
+        global-box-sizing: border-box, // можно задать content-box
+        last-flow: to, // последний элемент в ряду флоатится вправо, можно сменить
+        debug: (
+                image: show, // варианты: show | hide | show-columns | show-baseline для показа всех вариантов колонок и линеечек
+                color: rgba(#66f, 0.5), // менять цвет у колонок
+                output: overlay, // есть еще вариант overlay, в котором колонки показываются только при наведении
+                toggle: top right, // положение переключателя для показа оверлея
+        ),
+        use-custom: (// для каждого из них если включить true будут использоваться миксины из Compass или наши собственные)
+                background-image: true, // возможность использовать свой миксин background-image
+                background-options: false, // разные background миксины
+                box-sizing: true, // свой миксин box-sizing
+                clearfix: false, // свой миксин clearfix
+                rem: true,
+        )
+);
+
+$susy-media: (
+        mobile: (
+                media: screen,
+                min-width: 480px
+        ), // default
+        tablet: (
+                media: screen,
+                min-width: 768px
+        ),
+        desktop: (
+                media: screen,
+                min-width: 960px
+        ),
+        desktop-wide:(
+                media: screen,
+                min-width: 1280px
+        )
+);

@@ -6,17 +6,15 @@ var webpack = require('webpack'),
 
 const config = {
     context: SRC_DIR,
-    entry: './js/main.js',
+    entry: {
+        main: './main.js'
+    },
     output: {
         path: DIST_DIR + '/app',
-        filename: 'scripts.js',
-        publicPath: 'app/'
+        filename: '[name].bundle.js',
+        publicPath: 'app/',
+        library: 'app'
     },
-    devServer: {
-        inline: true,
-        port: 3000
-    },
-    devtool: 'source-map',
     module: {
         loaders: [
             {
@@ -32,28 +30,39 @@ const config = {
                 include: SRC_DIR,
                 loader: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    use: 'css-loader?sourceMap!sass-loader?sourceMap'
+                    use: 'css-loader?sourceMap!postcss-loader!resolve-url-loader!sass-loader?sourceMap'
                 })
             },
             {
-                test: /\.json$/,
-                loader: "json-loader"
+                test: /\.(png|gif|jpg|jpeg|svg|otf|ttf|eot|woff|woff2)$/,
+                include: /\/node_modules\//,
+                loader: 'file-loader?name=[1].[ext]&regExp=node_modules/(.*)'
             },
             {
-                test: /\.(png|gif|jpg|jpeg|svg|otf|ttf|eot|woff)$/,
-                loader: 'file-loader'
+                test: /\.(png|gif|jpg|jpeg|svg|otf|ttf|eot|woff|woff2)$/,
+                exclude: /\/node_modules\//,
+                loader: 'file-loader?name=[path][name].[ext]'
             }
         ]
     },
     plugins: [
+        new webpack.optimize.CommonsChunkPlugin('vendors'),
         new webpack.ProvidePlugin({
             "React": "react",
             'ReactDOM': 'react-dom'
         }),
         new webpack.NoEmitOnErrorsPlugin(),
-        new ExtractTextPlugin('style.css'),
-        new webpack.optimize.OccurrenceOrderPlugin(),
-    ]
+        new ExtractTextPlugin({filename: 'css/style.css', allChunks: true}),
+        new webpack.optimize.OccurrenceOrderPlugin()
+    ],
+    devtool: 'source-map',
+    devServer: {
+        inline: true,
+        port: 3000
+    },
+    watchOptions: {
+        aggregateTimeout: 100
+    }
 };
 
 module.exports = config;
