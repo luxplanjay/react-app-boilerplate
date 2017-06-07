@@ -1,19 +1,17 @@
-// Created by Zerk on 25-May-17.
-
 const {resolve} = require('path'),
-  webpack = require('webpack'),
-  ExtractTextPlugin = require('extract-text-webpack-plugin'),
-  HtmlWebpackPlugin = require('html-webpack-plugin'),
-  CleanWebpackPlugin = require('clean-webpack-plugin'),
-  SRC_DIR = resolve(__dirname, 'src'),
-  BUILD_DIR = resolve(__dirname, 'build'),
-  NODE_MODULES = resolve(__dirname, 'node_modules'),
-  isProd = process.env.NODE_ENV === 'production';
+      webpack = require('webpack'),
+      ExtractTextPlugin = require('extract-text-webpack-plugin'),
+      HtmlWebpackPlugin = require('html-webpack-plugin'),
+      CleanWebpackPlugin = require('clean-webpack-plugin'),
+      SRC_DIR = resolve(__dirname, 'src'),
+      BUILD_DIR = resolve(__dirname, 'build'),
+      NODE_MODULES = resolve(__dirname, 'node_modules'),
+      isProd = process.env.NODE_ENV === 'production';
 
 const config = {
   context: SRC_DIR,
   entry: {
-    app: './js/index.js'
+    main: './js/index.js'
   },
   output: {
     path: BUILD_DIR,
@@ -22,11 +20,14 @@ const config = {
   },
   module: {
     rules: [
-      // javascript
+      // $js
       {
         test: /\.(js|jsx)$/,
         include: SRC_DIR,
         use: [
+          // {
+          //   loader: 'react-hot-loader'
+          // },
           {
             loader: 'babel-loader',
             options: {
@@ -56,7 +57,7 @@ const config = {
       },
       // images
       {
-        test: /\.(jpe?g|png|gif|svg)$/i,
+        test: /\.(jpe?g|png|gif)$/i,
         include: SRC_DIR,
         use: [
           {
@@ -69,6 +70,32 @@ const config = {
           },
           {
             loader: 'img-loader'
+          }
+        ]
+      },
+      // svg
+      {
+        test: /\.svg$/i,
+        include: SRC_DIR,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]?[hash]',
+              outputPath: 'img/'
+            }
+          },
+          {
+            loader: 'img-loader',
+            options: {
+              svgo: {
+                plugins: [
+                  {removeTitle: true},
+                  {cleanupIDs: false},
+                  {convertPathData: false}
+                ]
+              }
+            }
           }
         ]
       },
@@ -94,26 +121,24 @@ const config = {
   },
   plugins: [
     new webpack.ProvidePlugin({
-      // React: 'react',
-      // ReactDOM: 'react-dom'
-      // $: 'jQuery',
-      // '_': 'lodash'
+      React: 'react',
+      ReactDOM: 'react-dom',
+      _: 'lodash'
     }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: 'index.html',
-      inject: true
+      template: './index.html',
+      favicon: './img/favicon.png',
+      inject: true,
+      hash: true
     }),
     new ExtractTextPlugin({
       filename: 'css/styles.css',
       allChunks: true,
       disable: false
     }),
-    new CleanWebpackPlugin([
-      'build'
-    ]),
+    new CleanWebpackPlugin(['build']),
     new webpack.EnvironmentPlugin(['NODE_ENV']),
-    new webpack.optimize.UglifyJsPlugin(),
     new webpack.LoaderOptionsPlugin({
       minimize: true
     }),
@@ -132,13 +157,19 @@ const config = {
 if (!isProd) {
   config.devtool = 'source-map';
   config.devServer = {
-    // contentBase: BUILD_DIR,
     hot: true,
     open: true,
     compress: true,
     stats: 'errors-only',
     port: 9000
   };
+} else {
+  config.plugins.push(
+    new webpack.optimize.UglifyJsPlugin({
+      minimize: true,
+      comments: false
+    })
+  );
 }
 
 module.exports = config;
