@@ -32,7 +32,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: [['es2015', {modules: false}], 'react'],
+              presets: [['env', {modules: false}], 'react'],
               plugins: ['react-hot-loader/babel']
             }
           }
@@ -44,9 +44,9 @@ module.exports = {
         use: ['css-hot-loader'].concat(ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [
-                        {loader: 'css-loader', options: {sourceMap: true}},
-                        {loader: 'postcss-loader', options: {sourceMap: true}},
-                        {loader: 'sass-loader', options: {sourceMap: true}}
+            {loader: 'css-loader', options: {sourceMap: true}},
+            {loader: 'postcss-loader', options: {sourceMap: true}},
+            {loader: 'sass-loader', options: {sourceMap: true}}
           ]
         })),
       },
@@ -83,9 +83,9 @@ module.exports = {
             options: {
               svgo: {
                 plugins: [
-                                    {removeTitle: true},
-                                    {cleanupIDs: false},
-                                    {convertPathData: false}
+                  {removeTitle: true},
+                  {cleanupIDs: false},
+                  {convertPathData: false}
                 ]
               }
             }
