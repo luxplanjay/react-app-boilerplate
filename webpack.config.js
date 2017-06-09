@@ -114,7 +114,7 @@ module.exports = {
   plugins: [
     new webpack.ProvidePlugin({}),
     new HtmlWebpackPlugin({
-      title: 'Scrumi',
+      title: 'Placeholder',
       filename: 'index.html',
       template: 'index.ejs',
       favicon: 'img/favicon.png',
