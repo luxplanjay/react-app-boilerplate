@@ -9,7 +9,10 @@ const {resolve} = require('path'),
 
 module.exports = {
   context: SRC_DIR,
-  entry: './js/index.js',
+  entry: {
+    app: './index.js',
+    vendor: ['lodash']
+  },
   output: {
     path: BUILD_DIR,
     filename: 'js/[name].bundle.js',
@@ -103,10 +106,12 @@ module.exports = {
     modules: [SRC_DIR, NODE_MODULES],
   },
   plugins: [
+    new webpack.ProvidePlugin({}),
     new HtmlWebpackPlugin({
+      title: 'Scrumi',
       filename: 'index.html',
-      template: './index.html',
-      favicon: './img/favicon.png',
+      template: 'index.ejs',
+      favicon: 'img/favicon.png',
       inject: true,
       hash: true
     }),
@@ -125,7 +130,7 @@ module.exports = {
       minChunkSize: 10000
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'common'
+      name: 'vendor'
     }),
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: true,

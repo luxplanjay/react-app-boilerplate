@@ -1,2 +1,0 @@
-1) Complete common chunks setup
-2) integrate ESLint

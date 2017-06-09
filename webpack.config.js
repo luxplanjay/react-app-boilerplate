@@ -9,12 +9,15 @@ const {resolve} = require('path'),
 
 module.exports = {
   context: SRC_DIR,
-  entry: [
-    'react-hot-loader/patch',
-    'webpack-dev-server/client?http://localhost:9000',
-    'webpack/hot/only-dev-server',
-    './js/index.js',
-  ],
+  entry: {
+    app: [
+      'react-hot-loader/patch',
+      'webpack-dev-server/client?http://localhost:9000',
+      'webpack/hot/only-dev-server',
+      './index.js'
+    ],
+    vendor: ['lodash']
+  },
   output: {
     path: BUILD_DIR,
     filename: 'js/[name].bundle.js',
@@ -109,10 +112,12 @@ module.exports = {
     modules: [SRC_DIR, NODE_MODULES],
   },
   plugins: [
+    new webpack.ProvidePlugin({}),
     new HtmlWebpackPlugin({
+      title: 'Scrumi',
       filename: 'index.html',
-      template: './index.html',
-      favicon: './img/favicon.png',
+      template: 'index.ejs',
+      favicon: 'img/favicon.png',
       inject: true,
       hash: true
     }),
@@ -131,22 +136,22 @@ module.exports = {
       minChunkSize: 10000
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'common'
+      name: 'vendor'
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   ],
-  devtool: 'inline-source-map',
+  devtool: 'cheap-module-eval-source-map',
   devServer: {
     contentBase: BUILD_DIR,
+    publicPath: '/',
     hot: true,
     open: true,
     compress: true,
-    stats: 'errors-only',
-    clientLogLevel: 'error',
     port: 9000,
     historyApiFallback: true,
-    publicPath: '/'
+    stats: 'errors-only',
+    clientLogLevel: 'error'
   }
 };

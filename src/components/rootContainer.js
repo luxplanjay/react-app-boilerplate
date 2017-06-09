@@ -1,8 +1,5 @@
 import React from 'react';
 
-import Title from '../Title/Title';
-import Text from '../Text/Text';
-
 class RootContainer extends React.Component {
   constructor() {
     super();
@@ -10,10 +7,7 @@ class RootContainer extends React.Component {
 
   render() {
     return (
-      <div>
-          <Title/>
-          <Text/>
-      </div>
+      <div></div>
     );
   }
 }
