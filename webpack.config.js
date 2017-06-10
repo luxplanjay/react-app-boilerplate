@@ -152,6 +152,6 @@ module.exports = {
     port: 9000,
     historyApiFallback: true,
     stats: 'errors-only',
-    clientLogLevel: 'error'
+    clientLogLevel: 'warning'
   }
 };
