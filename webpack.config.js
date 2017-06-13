@@ -117,7 +117,7 @@ module.exports = {
       title: 'Placeholder',
       filename: 'index.html',
       template: 'index.ejs',
-      favicon: 'img/favicon.png',
+      favicon: 'favicon.png',
       inject: true,
       hash: true
     }),

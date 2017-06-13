@@ -1,6 +1,6 @@
 import React from 'react';
 
-class RootContainer extends React.Component {
+export default class RootContainer extends React.Component {
   constructor() {
     super();
   }
@@ -11,5 +11,3 @@ class RootContainer extends React.Component {
     );
   }
 }
-
-export default RootContainer;
