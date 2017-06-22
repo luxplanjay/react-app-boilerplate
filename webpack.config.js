@@ -114,7 +114,7 @@ module.exports = {
   plugins: [
     new webpack.ProvidePlugin({}),
     new HtmlWebpackPlugin({
-      title: 'Placeholder',
+      title: 'React App',
       filename: 'index.html',
       template: 'index.ejs',
       favicon: 'favicon.png',
