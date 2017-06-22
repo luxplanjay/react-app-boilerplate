@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class RootContainer extends React.Component {
+export default class App extends React.Component {
   constructor() {
     super();
   }
