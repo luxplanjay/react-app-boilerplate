@@ -1,11 +1,12 @@
-const {resolve} = require('path'),
-      webpack = require('webpack'),
-      ExtractTextPlugin = require('extract-text-webpack-plugin'),
-      HtmlWebpackPlugin = require('html-webpack-plugin'),
-      CleanWebpackPlugin = require('clean-webpack-plugin'),
-      SRC_DIR = resolve(__dirname, 'src'),
-      BUILD_DIR = resolve(__dirname, 'build'),
-      NODE_MODULES = resolve(__dirname, 'node_modules');
+const { resolve } = require('path');
+const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+
+const SRC_DIR = resolve(__dirname, 'src');
+const BUILD_DIR = resolve(__dirname, 'build');
+const NODE_MODULES = resolve(__dirname, 'node_modules');
 
 module.exports = {
   context: SRC_DIR,
@@ -14,14 +15,14 @@ module.exports = {
       'react-hot-loader/patch',
       'webpack-dev-server/client?http://localhost:9000',
       'webpack/hot/only-dev-server',
-      './index.js'
+      './index.js',
     ],
-    vendor: ['lodash']
+    vendors: ['lodash'],
   },
   output: {
     path: BUILD_DIR,
     filename: 'js/[name].bundle.js',
-    publicPath: '/'
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -32,11 +33,11 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: [['env', {modules: false}], 'react'],
-              plugins: ['react-hot-loader/babel']
-            }
-          }
-        ]
+              presets: [['env', { modules: false }], 'react'],
+              plugins: ['react-hot-loader/babel'],
+            },
+          },
+        ],
       },
       {
         test: /\.scss$/,
@@ -44,10 +45,10 @@ module.exports = {
         use: ['css-hot-loader'].concat(ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [
-            {loader: 'css-loader', options: {sourceMap: true}},
-            {loader: 'postcss-loader', options: {sourceMap: true}},
-            {loader: 'sass-loader', options: {sourceMap: true}}
-          ]
+            { loader: 'css-loader', options: { sourceMap: true } },
+            { loader: 'postcss-loader', options: { sourceMap: true } },
+            { loader: 'sass-loader', options: { sourceMap: true } },
+          ],
         })),
       },
       {
@@ -59,13 +60,13 @@ module.exports = {
             options: {
               name: '[name].[ext]?[hash]',
               outputPath: 'img/',
-              limit: 10000
-            }
+              limit: 10000,
+            },
           },
           {
-            loader: 'img-loader'
-          }
-        ]
+            loader: 'img-loader',
+          },
+        ],
       },
       {
         test: /\.svg$/i,
@@ -75,22 +76,22 @@ module.exports = {
             loader: 'file-loader',
             options: {
               name: '[name].[ext]?[hash]',
-              outputPath: 'img/'
-            }
+              outputPath: 'img/',
+            },
           },
           {
             loader: 'img-loader',
             options: {
               svgo: {
                 plugins: [
-                  {removeTitle: true},
-                  {cleanupIDs: false},
-                  {convertPathData: false}
-                ]
-              }
-            }
-          }
-        ]
+                  { removeTitle: true },
+                  { cleanupIDs: false },
+                  { convertPathData: false },
+                ],
+              },
+            },
+          },
+        ],
       },
       {
         test: /\.(otf|ttf|eot|woff|woff2)$/,
@@ -101,11 +102,11 @@ module.exports = {
             options: {
               name: '[name].[ext]',
               outputPath: 'fonts/',
-            }
-          }
-        ]
-      }
-    ]
+            },
+          },
+        ],
+      },
+    ],
   },
   resolve: {
     extensions: ['.js', '.jsx', '.scss'],
@@ -119,28 +120,28 @@ module.exports = {
       template: 'index.ejs',
       favicon: 'favicon.png',
       inject: true,
-      hash: true
+      hash: true,
     }),
     new ExtractTextPlugin({
       filename: 'css/styles.css',
       allChunks: true,
-      disable: false
+      disable: false,
     }),
     new CleanWebpackPlugin(['build']),
     new webpack.EnvironmentPlugin(['NODE_ENV']),
     new webpack.LoaderOptionsPlugin({
-      minimize: true
+      minimize: true,
     }),
     new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 10,
-      minChunkSize: 10000
+      minChunkSize: 10000,
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor'
+      name: 'vendors',
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin(),
   ],
   devtool: 'cheap-module-eval-source-map',
   devServer: {
@@ -152,6 +153,6 @@ module.exports = {
     port: 9000,
     historyApiFallback: true,
     stats: 'errors-only',
-    clientLogLevel: 'warning'
-  }
+    clientLogLevel: 'warning',
+  },
 };
