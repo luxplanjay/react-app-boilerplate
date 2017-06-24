@@ -17,7 +17,7 @@ module.exports = {
       'webpack/hot/only-dev-server',
       './index.js',
     ],
-    vendors: ['lodash'],
+    commons: ['lodash'],
   },
   output: {
     path: BUILD_DIR,
@@ -137,7 +137,7 @@ module.exports = {
       minChunkSize: 10000,
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendors',
+      name: 'commons',
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),

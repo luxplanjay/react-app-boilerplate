@@ -12,7 +12,7 @@ module.exports = {
   context: SRC_DIR,
   entry: {
     app: './index.js',
-    vendor: ['lodash'],
+    commons: ['lodash'],
   },
   output: {
     path: BUILD_DIR,
@@ -131,7 +131,7 @@ module.exports = {
       minChunkSize: 10000,
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
+      name: 'commons',
     }),
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: true,
