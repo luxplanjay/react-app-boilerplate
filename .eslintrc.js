@@ -5,16 +5,6 @@ module.exports = {
     "node": true,
     "es6": true
   },
-  "parserOptions": {
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true,
-      "modules": true
-    }
-  },
-  "globals": {
-    "_": true
-  },
   "rules": {
     "func-names": ["error", "never"],
     "linebreak-style": [
@@ -26,5 +16,8 @@ module.exports = {
     "react",
     "jsx-a11y",
     "import"
-  ]
+  ],
+  "globals": {
+    "_": true
+  },
 };

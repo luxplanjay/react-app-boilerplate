@@ -11,7 +11,7 @@ const NODE_MODULES = resolve(__dirname, 'node_modules');
 module.exports = {
   context: SRC_DIR,
   entry: {
-    app: './index.js',
+    app: './index.jsx',
     commons: ['lodash'],
   },
   output: {
