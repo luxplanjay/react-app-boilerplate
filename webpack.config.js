@@ -6,7 +6,6 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const SRC_DIR = resolve(__dirname, 'src');
 const BUILD_DIR = resolve(__dirname, 'build');
-const NODE_MODULES = resolve(__dirname, 'node_modules');
 
 module.exports = {
   context: SRC_DIR,
@@ -29,15 +28,7 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         include: SRC_DIR,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              presets: [['env', { modules: false }], 'react'],
-              plugins: ['react-hot-loader/babel'],
-            },
-          },
-        ],
+        use: 'babel-loader',
       },
       {
         test: /\.scss$/,
@@ -110,7 +101,10 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.scss'],
-    modules: [SRC_DIR, NODE_MODULES],
+    modules: [SRC_DIR, 'node_modules'],
+    alias: {
+      '@': SRC_DIR,
+    },
   },
   plugins: [
     new webpack.ProvidePlugin({}),

@@ -21,6 +21,13 @@ module.exports = {
     "jsx-a11y",
     "import"
   ],
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "webpack.config.js"
+      }
+    }
+  },
   "globals": {
     "_": true
   },

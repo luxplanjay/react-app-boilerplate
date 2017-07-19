@@ -24,14 +24,7 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         include: SRC_DIR,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              presets: [['env', { modules: false }], 'react'],
-            },
-          },
-        ],
+        use: 'babel-loader',
       },
       {
         test: /\.scss$/,
@@ -103,8 +96,11 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.json', '.jsx', '.scss'],
-    modules: [SRC_DIR, NODE_MODULES],
+    extensions: ['.js', '.jsx', '.scss'],
+    modules: [SRC_DIR, 'node_modules'],
+    alias: {
+      '@': SRC_DIR,
+    },
   },
   plugins: [
     new webpack.ProvidePlugin({}),
