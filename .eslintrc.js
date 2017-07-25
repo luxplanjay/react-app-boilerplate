@@ -1,5 +1,6 @@
 module.exports = {
   "extends": "airbnb",
+  "parser": "babel-eslint",
   "rules": {
     "max-len": [1, 100, 2, {ignoreComments: true}],
     "quote-props": [1, "consistent-as-needed"],
@@ -29,6 +30,5 @@ module.exports = {
     }
   },
   "globals": {
-    "_": true
   },
 };
