@@ -1,26 +1,24 @@
-const { resolve } = require('path');
+const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-const SRC_DIR = resolve(__dirname, 'src');
-const BUILD_DIR = resolve(__dirname, 'build');
+const SRC_DIR = path.resolve(__dirname, 'src');
+const DIST_DIR = path.resolve(__dirname, 'dist');
 
 module.exports = {
   context: SRC_DIR,
-  entry: {
-    app: [
-      'react-hot-loader/patch',
-      'webpack-dev-server/client?http://localhost:9000',
-      'webpack/hot/only-dev-server',
-      './index.jsx',
-    ],
-    commons: ['lodash'],
-  },
+  entry: [
+    'babel-polyfill',
+    'webpack-dev-server/client?http://localhost:9000',
+    'webpack/hot/only-dev-server',
+    'react-hot-loader/patch',
+    './index.jsx',
+  ],
   output: {
-    path: BUILD_DIR,
-    filename: 'js/[name].bundle.js',
+    path: DIST_DIR,
+    filename: '[name].bundle.js',
     publicPath: '/',
   },
   module: {
@@ -33,14 +31,12 @@ module.exports = {
       {
         test: /\.scss$/,
         include: SRC_DIR,
-        use: ['css-hot-loader'].concat(ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            { loader: 'css-loader', options: { sourceMap: true } },
-            { loader: 'postcss-loader', options: { sourceMap: true } },
-            { loader: 'sass-loader', options: { sourceMap: true } },
-          ],
-        })),
+        use: [
+          {loader: 'style-loader'},
+          {loader: 'css-loader', options: {sourceMap: true}},
+          {loader: 'postcss-loader', options: {sourceMap: true}},
+          {loader: 'sass-loader', options: {sourceMap: true}},
+        ],
       },
       {
         test: /\.(jpe?g|png|gif)$/i,
@@ -49,7 +45,7 @@ module.exports = {
           {
             loader: 'url-loader',
             options: {
-              name: '[name].[ext]?[hash]',
+              name: '[name].[ext]?[hash:5]',
               outputPath: 'img/',
               limit: 10000,
             },
@@ -66,7 +62,7 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: '[name].[ext]?[hash]',
+              name: '[name].[ext]?[hash:5]',
               outputPath: 'img/',
             },
           },
@@ -75,9 +71,9 @@ module.exports = {
             options: {
               svgo: {
                 plugins: [
-                  { removeTitle: true },
-                  { cleanupIDs: false },
-                  { convertPathData: false },
+                  {removeTitle: true},
+                  {cleanupIDs: false},
+                  {convertPathData: false},
                 ],
               },
             },
@@ -85,7 +81,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(otf|ttf|eot|woff|woff2)$/,
+        test: /\.(otf|ttf|eot)(\?[a-z0-9#=&.]+)?$/,
         include: SRC_DIR,
         use: [
           {
@@ -100,51 +96,33 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.scss'],
+    extensions: ['.js', '.jsx'],
     modules: [SRC_DIR, 'node_modules'],
     alias: {
       '@': SRC_DIR,
     },
   },
   plugins: [
-    new webpack.ProvidePlugin({}),
+    new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       title: 'React App',
       filename: 'index.html',
-      template: 'index.ejs',
-      favicon: 'favicon.png',
+      template: './index.ejs',
+      favicon: './favicon.png',
       inject: true,
       hash: true,
     }),
-    new ExtractTextPlugin({
-      filename: 'css/styles.css',
-      allChunks: true,
-      disable: false,
-    }),
-    new CleanWebpackPlugin(['build']),
-    new webpack.EnvironmentPlugin(['NODE_ENV']),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true,
-    }),
-    new webpack.optimize.LimitChunkCountPlugin({
-      maxChunks: 10,
-      minChunkSize: 10000,
-    }),
+    new webpack.LoaderOptionsPlugin({minimize: true}),
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'commons',
+      filename: 'commons.js'
     }),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('development')
+    }),
   ],
-  devtool: 'cheap-module-eval-source-map',
-  devServer: {
-    publicPath: '/',
-    hot: true,
-    compress: true,
-    port: 9000,
-    historyApiFallback: true,
-    stats: 'errors-only',
-    clientLogLevel: 'warning',
-  },
+  devtool: 'eval-source-map'
 };

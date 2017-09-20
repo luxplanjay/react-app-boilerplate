@@ -9,7 +9,7 @@ module.exports = {
     "func-names": ["error", "never"],
     "linebreak-style": [
       "error",
-      "unix"
+      "windows"
     ],
   },
   "env": {
