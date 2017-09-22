@@ -4,7 +4,7 @@
   "description": "React App Boilerplate",
   "main": "index.js",
   "scripts": {
-    "dev": "node server.js",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server",
     "prod": "cross-env NODE_ENV=production webpack -p --config webpack.config.production.js"
   },
   "author": "Zerk",

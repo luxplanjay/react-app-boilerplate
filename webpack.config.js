@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
@@ -124,5 +123,17 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify('development')
     }),
   ],
+  devServer: {
+    contentBase: DIST_DIR,
+    publicPath: '/',
+    hot: true,
+    historyApiFallback: true,
+    noInfo: false,
+    quiet: false,
+    stats: 'errors-only',
+    clientLogLevel: 'warning',
+    compress: true,
+    port: 9000
+  },
   devtool: 'eval-source-map'
 };
