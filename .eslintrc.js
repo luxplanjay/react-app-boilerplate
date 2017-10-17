@@ -7,6 +7,7 @@ module.exports = {
     "no-unused-vars": [2, {"args": "none"}],
     "radix": 0,
     "func-names": ["error", "never"],
+    // add to your own preference, crlf or lf
     "linebreak-style": [
       "error",
       "windows"

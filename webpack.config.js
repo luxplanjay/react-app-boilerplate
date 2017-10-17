@@ -28,13 +28,18 @@ module.exports = {
         use: 'babel-loader',
       },
       {
+        test: /\.css$/,
+        include: SRC_DIR,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
         test: /\.scss$/,
         include: SRC_DIR,
         use: [
-          {loader: 'style-loader'},
-          {loader: 'css-loader', options: {sourceMap: true}},
-          {loader: 'postcss-loader', options: {sourceMap: true}},
-          {loader: 'sass-loader', options: {sourceMap: true}},
+          { loader: 'style-loader' },
+          { loader: 'css-loader', options: { sourceMap: true } },
+          { loader: 'postcss-loader', options: { sourceMap: true } },
+          { loader: 'sass-loader', options: { sourceMap: true } },
         ],
       },
       {
@@ -70,9 +75,9 @@ module.exports = {
             options: {
               svgo: {
                 plugins: [
-                  {removeTitle: true},
-                  {cleanupIDs: false},
-                  {convertPathData: false},
+                  { removeTitle: true },
+                  { cleanupIDs: false },
+                  { convertPathData: false },
                 ],
               },
             },
@@ -104,23 +109,22 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
-      title: 'React App',
       filename: 'index.html',
       template: './index.ejs',
       favicon: './favicon.png',
       inject: true,
       hash: true,
     }),
-    new webpack.LoaderOptionsPlugin({minimize: true}),
+    new webpack.LoaderOptionsPlugin({ minimize: true }),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'commons',
-      filename: 'commons.js'
+      filename: 'commons.js',
     }),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development')
+      'process.env.NODE_ENV': JSON.stringify('development'),
     }),
   ],
   devServer: {
@@ -133,7 +137,7 @@ module.exports = {
     stats: 'errors-only',
     clientLogLevel: 'warning',
     compress: true,
-    port: 9000
+    port: 9000,
   },
-  devtool: 'eval-source-map'
+  devtool: 'eval-source-map',
 };

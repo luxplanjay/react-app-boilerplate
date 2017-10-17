@@ -11,7 +11,7 @@ module.exports = {
   context: SRC_DIR,
   entry: [
     'babel-polyfill',
-    './index.jsx'
+    './index.jsx',
   ],
   output: {
     path: DIST_DIR,
@@ -26,14 +26,22 @@ module.exports = {
         use: 'babel-loader',
       },
       {
+        test: /\.css$/,
+        include: SRC_DIR,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          user: ['css-loader'],
+        }),
+      },
+      {
         test: /\.scss$/,
         include: SRC_DIR,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [
-            {loader: 'css-loader', options: {sourceMap: true}},
-            {loader: 'postcss-loader', options: {sourceMap: true}},
-            {loader: 'sass-loader', options: {sourceMap: true}},
+            { loader: 'css-loader', options: { sourceMap: true } },
+            { loader: 'postcss-loader', options: { sourceMap: true } },
+            { loader: 'sass-loader', options: { sourceMap: true } },
           ],
         }),
       },
@@ -70,9 +78,9 @@ module.exports = {
             options: {
               svgo: {
                 plugins: [
-                  {removeTitle: true},
-                  {cleanupIDs: false},
-                  {convertPathData: false},
+                  { removeTitle: true },
+                  { cleanupIDs: false },
+                  { convertPathData: false },
                 ],
               },
             },
@@ -104,7 +112,6 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
-      title: 'React App',
       filename: 'index.html',
       template: './index.ejs',
       favicon: './favicon.png',
@@ -122,14 +129,14 @@ module.exports = {
       comments: false,
     }),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
+      'process.env.NODE_ENV': JSON.stringify('production'),
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'commons',
-      filename: 'commons.js'
+      filename: 'commons.js',
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
     }),
-  ]
+  ],
 };
