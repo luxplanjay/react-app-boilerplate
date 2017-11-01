@@ -6,7 +6,7 @@ export default (
     <Route
       exact
       path="/"
-      component={() => <h1>HOME PAGE COMPONENT</h1>}
+      component={() => <h1>Homepage component</h1>}
     />
     <Route render={() => <h1>404 COMPONENT</h1>} />
   </Switch>
