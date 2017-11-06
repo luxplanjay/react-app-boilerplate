@@ -1,11 +1,10 @@
+/* eslint-disable global-require */
 import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-import createHistory from 'history/createBrowserHistory';
-import configureStore from './store';
+import { configureStore, history } from './store';
 import RootContainer from './containers/RootContainer';
 
-const history = createHistory();
 const store = configureStore();
 
 render(

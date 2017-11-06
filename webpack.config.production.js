@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const StatsPlugin = require('stats-webpack-plugin');
 
 const SRC_DIR = path.resolve(__dirname, 'src');
 const DIST_DIR = path.resolve(__dirname, 'dist');
@@ -15,7 +16,7 @@ module.exports = {
   ],
   output: {
     path: DIST_DIR,
-    filename: '[name].bundle.min.js',
+    filename: '[name].bundle.min.js?[hash]',
     publicPath: '',
   },
   module: {
@@ -23,14 +24,20 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         include: SRC_DIR,
-        use: 'babel-loader',
+        use: [
+          { loader: 'babel-loader' },
+          {
+            loader: 'eslint-loader',
+            options: { fix: true, cache: true },
+          },
+        ],
       },
       {
         test: /\.css$/,
         include: SRC_DIR,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          user: ['css-loader'],
+          use: ['css-loader'],
         }),
       },
       {
@@ -38,11 +45,7 @@ module.exports = {
         include: SRC_DIR,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: [
-            { loader: 'css-loader', options: { sourceMap: true } },
-            { loader: 'postcss-loader', options: { sourceMap: true } },
-            { loader: 'sass-loader', options: { sourceMap: true } },
-          ],
+          use: ['css-loader', 'postcss-loader', 'sass-loader'],
         }),
       },
       {
@@ -57,9 +60,7 @@ module.exports = {
               limit: 10000,
             },
           },
-          {
-            loader: 'img-loader',
-          },
+          { loader: 'img-loader' },
         ],
       },
       {
@@ -100,6 +101,20 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.woff(2)?(\?[a-z0-9#=&.]+)?$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'fonts/',
+              limit: 10000,
+              mimetype: 'application/font-woff',
+            },
+          },
+        ],
+      },
     ],
   },
   resolve: {
@@ -113,13 +128,13 @@ module.exports = {
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: './index.ejs',
-      favicon: './favicon.png',
+      template: 'index.ejs',
+      favicon: 'favicon.png',
       inject: true,
       hash: true,
     }),
     new ExtractTextPlugin({
-      filename: 'styles.min.css',
+      filename: 'styles.min.css?[hash]',
       allChunks: true,
       disable: false,
     }),
@@ -127,6 +142,10 @@ module.exports = {
       sourceMap: true,
       minimize: true,
       comments: false,
+      compressor: {
+        warnings: false,
+        screw_ie8: true,
+      },
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
@@ -135,8 +154,9 @@ module.exports = {
       name: 'commons',
       filename: 'commons.js',
     }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true,
+    new StatsPlugin('webpack.stats.json', {
+      source: false,
+      modules: false,
     }),
   ],
 };

@@ -7,6 +7,7 @@ const SRC_DIR = path.resolve(__dirname, 'src');
 const DIST_DIR = path.resolve(__dirname, 'dist');
 
 module.exports = {
+  devtool: 'eval-source-map',
   context: SRC_DIR,
   entry: [
     'babel-polyfill',
@@ -25,7 +26,13 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         include: SRC_DIR,
-        use: 'babel-loader',
+        use: [
+          { loader: 'babel-loader' },
+          {
+            loader: 'eslint-loader',
+            options: { fix: true, cache: true },
+          },
+        ],
       },
       {
         test: /\.css$/,
@@ -35,12 +42,7 @@ module.exports = {
       {
         test: /\.scss$/,
         include: SRC_DIR,
-        use: [
-          { loader: 'style-loader' },
-          { loader: 'css-loader', options: { sourceMap: true } },
-          { loader: 'postcss-loader', options: { sourceMap: true } },
-          { loader: 'sass-loader', options: { sourceMap: true } },
-        ],
+        use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
       },
       {
         test: /\.(jpe?g|png|gif)$/i,
@@ -54,9 +56,7 @@ module.exports = {
               limit: 10000,
             },
           },
-          {
-            loader: 'img-loader',
-          },
+          { loader: 'img-loader' },
         ],
       },
       {
@@ -97,6 +97,20 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.woff(2)?(\?[a-z0-9#=&.]+)?$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'fonts/',
+              limit: 10000,
+              mimetype: 'application/font-woff',
+            },
+          },
+        ],
+      },
     ],
   },
   resolve: {
@@ -110,21 +124,20 @@ module.exports = {
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: './index.ejs',
-      favicon: './favicon.png',
+      template: 'index.ejs',
+      favicon: 'favicon.png',
       inject: true,
       hash: true,
     }),
-    new webpack.LoaderOptionsPlugin({ minimize: true }),
-    new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('development'),
+    }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'commons',
       filename: 'commons.js',
-    }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development'),
     }),
   ],
   devServer: {
@@ -139,5 +152,4 @@ module.exports = {
     compress: true,
     port: 9000,
   },
-  devtool: 'eval-source-map',
 };
