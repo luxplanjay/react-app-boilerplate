@@ -19,7 +19,7 @@ module.exports = {
   },
   output: {
     path: DIST_DIR,
-    filename: '[name].bundle.min.js?[hash]',
+    filename: '[name].bundle.[chunkhash].js',
     publicPath: '',
   },
   module: {
@@ -58,7 +58,7 @@ module.exports = {
           {
             loader: 'url-loader',
             options: {
-              name: '[name].[ext]?[hash:5]',
+              name: '[name].[chunkhash].[ext]',
               outputPath: 'img/',
               limit: 10000,
             },
@@ -73,7 +73,7 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: '[name].[ext]?[hash:5]',
+              name: '[name].[chunkhash].[ext]',
               outputPath: 'img/',
             },
           },
@@ -137,7 +137,7 @@ module.exports = {
       hash: true,
     }),
     new ExtractTextPlugin({
-      filename: 'styles.min.css?[hash]',
+      filename: 'styles.[chunkhash].css',
       allChunks: true,
       disable: false,
     }),
@@ -157,12 +157,8 @@ module.exports = {
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      filename: 'vendor.js',
+      filename: 'vendor.[chunkhash].js',
       minChunks: Infinity,
-    }),
-    new StatsPlugin('webpack.stats.json', {
-      source: false,
-      modules: false,
     }),
   ],
 };
