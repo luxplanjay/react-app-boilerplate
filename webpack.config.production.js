@@ -14,11 +14,10 @@ module.exports = {
       'babel-polyfill',
       './index.jsx',
     ],
-    vendor: ['react', 'react-dom'],
   },
   output: {
     path: DIST_DIR,
-    filename: '[name].bundle.[chunkhash].js',
+    filename: '[name].[chunkhash].js',
     publicPath: '',
   },
   module: {
@@ -156,8 +155,8 @@ module.exports = {
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      filename: 'vendor.[chunkhash].js',
-      minChunks: Infinity,
+      minChunks: m => m.context &&
+        m.context.includes('node_modules'),
     }),
   ],
 };

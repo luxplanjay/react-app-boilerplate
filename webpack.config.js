@@ -17,11 +17,10 @@ module.exports = {
       'react-hot-loader/patch',
       './index.jsx',
     ],
-    vendor: ['react', 'react-dom'],
   },
   output: {
     path: DIST_DIR,
-    filename: '[name].bundle.js',
+    filename: '[name].js',
     publicPath: '/',
   },
   module: {
@@ -54,7 +53,7 @@ module.exports = {
           {
             loader: 'url-loader',
             options: {
-              name: '[name].[ext]?[hash:5]',
+              name: '[name].[ext]',
               outputPath: 'img/',
               limit: 10000,
             },
@@ -69,7 +68,7 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: '[name].[ext]?[hash:5]',
+              name: '[name].[ext]',
               outputPath: 'img/',
             },
           },
@@ -142,7 +141,8 @@ module.exports = {
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      filename: 'vendor.js',
+      minChunks: m => m.context &&
+        m.context.includes('node_modules'),
     }),
   ],
   devServer: {
