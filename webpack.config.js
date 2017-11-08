@@ -9,13 +9,16 @@ const DIST_DIR = path.resolve(__dirname, 'dist');
 module.exports = {
   devtool: 'eval-source-map',
   context: SRC_DIR,
-  entry: [
-    'babel-polyfill',
-    'webpack-dev-server/client?http://localhost:9000',
-    'webpack/hot/only-dev-server',
-    'react-hot-loader/patch',
-    './index.jsx',
-  ],
+  entry: {
+    app: [
+      'babel-polyfill',
+      'webpack-dev-server/client?http://localhost:9000',
+      'webpack/hot/only-dev-server',
+      'react-hot-loader/patch',
+      './index.jsx',
+    ],
+    vendor: ['react', 'react-dom'],
+  },
   output: {
     path: DIST_DIR,
     filename: '[name].bundle.js',
@@ -133,11 +136,13 @@ module.exports = {
     new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development'),
+      'process.env': {
+        NODE_ENV: JSON.stringify('development'),
+      },
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'commons',
-      filename: 'commons.js',
+      name: 'vendor',
+      filename: 'vendor.js',
     }),
   ],
   devServer: {

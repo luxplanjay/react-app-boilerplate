@@ -10,10 +10,13 @@ const DIST_DIR = path.resolve(__dirname, 'dist');
 
 module.exports = {
   context: SRC_DIR,
-  entry: [
-    'babel-polyfill',
-    './index.jsx',
-  ],
+  entry: {
+    app: [
+      'babel-polyfill',
+      './index.jsx',
+    ],
+    vendor: ['react', 'react-dom'],
+  },
   output: {
     path: DIST_DIR,
     filename: '[name].bundle.min.js?[hash]',
@@ -148,11 +151,14 @@ module.exports = {
       },
     }),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
+      'process.env': {
+        NODE_ENV: JSON.stringify('production'),
+      },
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'commons',
-      filename: 'commons.js',
+      name: 'vendor',
+      filename: 'vendor.js',
+      minChunks: Infinity,
     }),
     new StatsPlugin('webpack.stats.json', {
       source: false,
