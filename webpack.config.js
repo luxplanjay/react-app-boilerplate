@@ -30,7 +30,7 @@ module.exports = {
         test: /\.(js|jsx)$/,
         include: SRC_DIR,
         use: [
-          { loader: 'babel-loader' },
+          'babel-loader',
           {
             loader: 'eslint-loader',
             options: { fix: true, cache: true },
@@ -59,7 +59,7 @@ module.exports = {
               limit: 10000,
             },
           },
-          { loader: 'img-loader' },
+          'img-loader',
         ],
       },
       {
