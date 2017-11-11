@@ -10,7 +10,7 @@ const DIST_DIR = path.resolve(__dirname, 'dist');
 module.exports = {
   context: SRC_DIR,
   entry: {
-    app: [
+    main: [
       'babel-polyfill',
       './index.jsx',
     ],
@@ -18,7 +18,6 @@ module.exports = {
   output: {
     path: DIST_DIR,
     filename: '[name].[chunkhash].js',
-    chunkFilename: '[name].[chunkhash].js',
     publicPath: '',
   },
   module: {
@@ -97,7 +96,7 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: '[name].[ext]',
+              name: '[name].[chunkhash].[ext]',
               outputPath: 'fonts/',
             },
           },
@@ -109,7 +108,7 @@ module.exports = {
           {
             loader: 'url-loader',
             options: {
-              name: '[name].[ext]',
+              name: '[name].[chunkhash].[ext]',
               outputPath: 'fonts/',
               limit: 10000,
               mimetype: 'application/font-woff',
@@ -133,7 +132,7 @@ module.exports = {
       template: 'index.ejs',
       favicon: 'favicon.png',
       inject: true,
-      hash: true,
+      hash: false,
     }),
     new ExtractTextPlugin({
       filename: 'styles.[chunkhash].css',
@@ -154,10 +153,14 @@ module.exports = {
         NODE_ENV: JSON.stringify('production'),
       },
     }),
+    new webpack.HashedModuleIdsPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: m => m.context &&
         m.context.includes('node_modules'),
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'runtime',
     }),
   ],
 };

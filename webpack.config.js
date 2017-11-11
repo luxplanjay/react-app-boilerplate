@@ -7,10 +7,10 @@ const SRC_DIR = path.resolve(__dirname, 'src');
 const DIST_DIR = path.resolve(__dirname, 'dist');
 
 module.exports = {
-  devtool: 'eval-source-map',
+  devtool: 'source-map',
   context: SRC_DIR,
   entry: {
-    app: [
+    main: [
       'babel-polyfill',
       'webpack-dev-server/client?http://localhost:9000',
       'webpack/hot/only-dev-server',
@@ -21,7 +21,6 @@ module.exports = {
   output: {
     path: DIST_DIR,
     filename: '[name].js',
-    chunkFilename: '[name].js',
     publicPath: '/',
   },
   module: {
@@ -130,7 +129,7 @@ module.exports = {
       template: 'index.ejs',
       favicon: 'favicon.png',
       inject: true,
-      hash: true,
+      hash: false,
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
