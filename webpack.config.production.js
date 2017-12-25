@@ -38,7 +38,15 @@ module.exports = {
         include: SRC_DIR,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: ['css-loader'],
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                localIdentName: '[name]__[local]__[hash:base64:5]',
+              },
+            },
+          ],
         }),
       },
       {
@@ -46,7 +54,23 @@ module.exports = {
         include: SRC_DIR,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: ['css-loader', 'postcss-loader', 'sass-loader'],
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                sourceMap: true,
+                localIdentName: '[name]__[local]__[hash:base64:5]',
+              },
+            },
+            'postcss-loader',
+            {
+              loader: 'sass-loader',
+              options: {
+                includePaths: [SRC_DIR],
+              },
+            },
+          ],
         }),
       },
       {
@@ -129,7 +153,7 @@ module.exports = {
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: 'index.ejs',
+      template: 'index.html',
       favicon: 'favicon.png',
       inject: true,
       hash: false,

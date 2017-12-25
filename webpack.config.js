@@ -39,12 +39,36 @@ module.exports = {
       {
         test: /\.css$/,
         include: SRC_DIR,
-        use: ['style-loader', 'css-loader'],
+        use: ['style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              localIdentName: '[name]__[local]__[hash:base64:5]',
+            },
+          },
+        ],
       },
       {
         test: /\.scss$/,
         include: SRC_DIR,
-        use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              localIdentName: '[name]__[local]__[hash:base64:5]',
+            },
+          },
+          'postcss-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              includePaths: [SRC_DIR],
+            },
+          },
+        ],
       },
       {
         test: /\.(jpe?g|png|gif)$/i,
@@ -126,7 +150,7 @@ module.exports = {
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: 'index.ejs',
+      template: 'index.html',
       favicon: 'favicon.png',
       inject: true,
       hash: false,
@@ -141,8 +165,7 @@ module.exports = {
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      minChunks: m => m.context &&
-        m.context.includes('node_modules'),
+      minChunks: m => m.context && m.context.includes('node_modules'),
     }),
   ],
   devServer: {
