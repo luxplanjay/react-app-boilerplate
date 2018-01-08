@@ -67,7 +67,7 @@ module.exports = {
             {
               loader: 'sass-loader',
               options: {
-                includePaths: [SRC_DIR],
+                includePaths: ['/src'],
               },
             },
           ],
