@@ -4,6 +4,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 
 const SRC_DIR = path.resolve(__dirname, 'src');
 const DIST_DIR = path.resolve(__dirname, 'dist');
@@ -150,7 +151,7 @@ module.exports = {
       '@': SRC_DIR,
     },
   },
-  devtool: 'source-map',
+  devtool: 'cheap-module-source-map',
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
@@ -169,8 +170,10 @@ module.exports = {
       sourceMap: true,
       minimize: true,
       comments: false,
-      compressor: {
-        warnings: false,
+      mangle: true,
+      compress: {
+        warnings: false, // Suppress uglification warnings
+        unsafe_comps: true,
         screw_ie8: true,
       },
     }),
@@ -189,5 +192,6 @@ module.exports = {
       name: 'runtime',
     }),
     new BundleAnalyzerPlugin(),
+    new DuplicatePackageCheckerPlugin(),
   ],
 };

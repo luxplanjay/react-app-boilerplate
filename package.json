@@ -21,6 +21,7 @@
     "clean-webpack-plugin": "^0.1.16",
     "cross-env": "^5.0.1",
     "css-loader": "^0.28.4",
+    "duplicate-package-checker-webpack-plugin": "^2.0.2",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.2",
     "eslint-import-resolver-webpack": "^0.8.3",
