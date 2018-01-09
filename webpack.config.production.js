@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const SRC_DIR = path.resolve(__dirname, 'src');
 const DIST_DIR = path.resolve(__dirname, 'dist');
@@ -149,6 +150,7 @@ module.exports = {
       '@': SRC_DIR,
     },
   },
+  devtool: 'source-map',
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
@@ -186,5 +188,6 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'runtime',
     }),
+    new BundleAnalyzerPlugin(),
   ],
 };
