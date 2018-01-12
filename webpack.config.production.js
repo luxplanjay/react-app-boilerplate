@@ -45,7 +45,9 @@ module.exports = {
               loader: 'css-loader',
               options: {
                 modules: true,
-                localIdentName: '[name]__[local]__[hash:base64:5]',
+                sourceMap: true,
+                importLoaders: 1,
+                localIdentName: '[sha1:hash:hex:4]',
               },
             },
           ],
@@ -62,7 +64,8 @@ module.exports = {
               options: {
                 modules: true,
                 sourceMap: true,
-                localIdentName: '[name]__[local]__[hash:base64:5]',
+                importLoaders: 1,
+                localIdentName: '[sha1:hash:hex:4]',
               },
             },
             'postcss-loader',
@@ -172,7 +175,7 @@ module.exports = {
       comments: false,
       mangle: true,
       compress: {
-        warnings: false, // Suppress uglification warnings
+        warnings: false,
         unsafe_comps: true,
         screw_ie8: true,
       },

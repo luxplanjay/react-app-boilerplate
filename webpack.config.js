@@ -7,7 +7,7 @@ const SRC_DIR = path.resolve(__dirname, 'src');
 const DIST_DIR = path.resolve(__dirname, 'dist');
 
 module.exports = {
-  devtool: 'source-map',
+  devtool: 'eval-source-map',
   context: SRC_DIR,
   entry: {
     main: [
@@ -44,7 +44,9 @@ module.exports = {
             loader: 'css-loader',
             options: {
               modules: true,
-              localIdentName: '[name]__[local]__[hash:base64:5]',
+              sourceMap: true,
+              importLoaders: 1,
+              localIdentName: '[sha1:hash:hex:4]',
             },
           },
         ],
@@ -58,7 +60,9 @@ module.exports = {
             loader: 'css-loader',
             options: {
               modules: true,
-              localIdentName: '[name]__[local]__[hash:base64:5]',
+              sourceMap: true,
+              importLoaders: 1,
+              localIdentName: '[sha1:hash:hex:4]',
             },
           },
           'postcss-loader',
