@@ -1,23 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
-import { ConnectedRouter } from 'react-router-redux';
+import { ConnectedRouter as Router } from 'react-router-redux';
 import { Provider } from 'react-redux';
 import App from '@/components/App';
 
-const propTypes = {
-  history: PropTypes.shape().isRequired,
-  store: PropTypes.shape().isRequired,
-};
-
 const RootContainer = ({ store, history }) => (
   <Provider store={store}>
-    <ConnectedRouter history={history}>
+    <Router history={history}>
       <Route path="/" component={App} />
-    </ConnectedRouter>
+    </Router>
   </Provider>
 );
 
-RootContainer.propTypes = propTypes;
+RootContainer.propTypes = {
+  history: PropTypes.shape().isRequired,
+  store: PropTypes.shape().isRequired,
+};
 
 export default RootContainer;
