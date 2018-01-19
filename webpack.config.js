@@ -115,19 +115,6 @@ module.exports = {
         ],
       },
       {
-        test: /\.(otf|ttf|eot)(\?[a-z0-9#=&.]+)?$/,
-        include: SRC_DIR,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]',
-              outputPath: 'fonts/',
-            },
-          },
-        ],
-      },
-      {
         test: /\.woff(2)?(\?[a-z0-9#=&.]+)?$/,
         use: [
           {
@@ -144,7 +131,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.css', '.scss'],
     modules: [SRC_DIR, 'node_modules'],
     alias: {
       '@': SRC_DIR,
